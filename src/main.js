@@ -179,7 +179,7 @@ render(mainSectionFilms, createCommentedFilmsListTemplate(), `beforeend`);
 
 const extraFilmsList = mainSectionFilms.querySelectorAll(`.films-list--extra`);
 
-extraFilmsList.forEach(elem => {
+extraFilmsList.forEach(function (elem) {
   const extraFilmsListContainer = elem.querySelector(`.films-list__container`);
   render(extraFilmsListContainer, createFilmCardTemplate(), `beforeend`);
   render(extraFilmsListContainer, createFilmCardTemplate(), `beforeend`);
