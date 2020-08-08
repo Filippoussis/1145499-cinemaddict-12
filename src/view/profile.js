@@ -1,11 +1,15 @@
 /**
  * создает шаблон профайла пользователя
+ * @param {object} profile - объект с данными пользователя
  * @return {string} возвращает HTML-строку в ввиде кода HTML
  */
-export const createProfileTemplate = () => {
+export const createProfileTemplate = (profile) => {
+
+  const {rank} = profile;
+
   return (
     `<section class="header__profile profile">
-      <p class="profile__rating">Movie Buff</p>
+      <p class="profile__rating">${rank}</p>
       <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
     </section>`
   );
