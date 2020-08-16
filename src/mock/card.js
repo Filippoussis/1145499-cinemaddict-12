@@ -1,10 +1,10 @@
-import {NAMES} from "../const.js";
-import {POSTERS} from "../const.js";
+import {NAME} from "../const.js";
+import {POSTER} from "../const.js";
 import {DESCRIPTION} from "../const.js";
 import {NumberSentencesOfDescription} from "../const.js";
 import {Rating} from "../const.js";
 import {Year} from "../const.js";
-import {GENRES} from "../const.js";
+import {GENRE} from "../const.js";
 import {Comments} from "../const.js";
 import {NumberGenres} from "../const.js";
 import {getRandomInteger} from "../utils.js";
@@ -15,12 +15,12 @@ import {getRandomFloat} from "../utils.js";
 export const generateFilmsCard = () => {
 
   return {
-    name: getRandomElementFromList(NAMES),
-    poster: getRandomElementFromList(POSTERS),
+    name: getRandomElementFromList(NAME),
+    poster: getRandomElementFromList(POSTER),
     description: getListRandomLength(DESCRIPTION, NumberSentencesOfDescription.MIN, NumberSentencesOfDescription.MAX).join(`, `),
     rating: getRandomFloat(Rating.MIN, Rating.MAX),
     year: getRandomInteger(Year.MIN, Year.MAX),
-    genre: getListRandomLength(GENRES, NumberGenres.MIN, NumberGenres.MAX).join(`, `),
+    genre: getListRandomLength(GENRE, NumberGenres.MIN, NumberGenres.MAX).join(`, `),
     comments: getRandomInteger(Comments.MIN, Comments.MAX),
     isWatchlist: Boolean(getRandomInteger()),
     isWatched: Boolean(getRandomInteger()),
