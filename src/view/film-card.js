@@ -1,9 +1,11 @@
+import {createElement} from "../utils.js";
+
 /**
  * создает шаблон карточки фильма
  * @param {object} card - объект с данными карточки
  * @return {string} возвращает HTML-строку в ввиде кода HTML
  */
-export const createFilmCardTemplate = (card) => {
+const createFilmCardTemplate = (card) => {
   const {name, poster, description, rating, year, genre, comments} = card;
 
   return (
@@ -26,3 +28,26 @@ export const createFilmCardTemplate = (card) => {
     </article>`
   );
 };
+
+export default class Card {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return createFilmCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
