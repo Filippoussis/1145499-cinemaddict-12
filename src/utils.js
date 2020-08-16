@@ -54,3 +54,36 @@ export const getListRandomLength = (arr, min, max) => {
 
   return listCopy.splice(getRandomInteger(0, listCopy.length - 1), getRandomInteger(min, max));
 };
+
+/**
+ * отрисовывает шаблон на странице
+ * @param {HTMLElement} container - HTML-элемент на странице
+ * @param {string} template - HTML-строка, которая будет вставлена именно «как HTML»
+ * @param {string} place - специальное слово, указывающее, куда по отношению к container производить вставку
+ */
+export const renderTemplate = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+export const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};

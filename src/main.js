@@ -1,82 +1,65 @@
-import {createProfileTemplate} from "./view/profile.js";
-import {createFilterTemplate} from "./view/filter.js";
-import {createSortTemplate} from "./view/sort.js";
-import {createSectionFilmsTemplate} from "./view/main-content.js";
-import {createSectionFilmsListTemplate} from "./view/all-movies.js";
-import {createFilmCardTemplate} from "./view/card.js";
-import {createShowMoreButtonTemplate} from "./view/button.js";
-import {createRatedFilmsListTemplate} from "./view/top-rated.js";
-import {createCommentedFilmsListTemplate} from "./view/most-commented.js";
-import {createTotalNumberFilmsTemplate} from "./view/count.js";
-import {generateFilmsCard} from "./mock/card.js";
-import {generateFilmsFilter} from "./mock/filter.js";
+import UserProfileView from "./view/user-profile.js";
+import FilmsFilter from "./view/films-filter.js";
+import FilmsSortView from "./view/films-sort.js";
+import AllFilmsView from "./view/films-main-section.js";
+import MainFilmsView from "./view/films-main-list.js";
+import FilmsContainerView from "./view/films-list-container.js";
+import FilmCard from "./view/film-card.js";
+import ShowMoreButton from "./view/show-more-button.js";
+import FilmsTotal from "./view/films-total.js";
+
 import {generateProfileUser} from "./mock/profile.js";
+import {generateFilmsFilter} from "./mock/filter.js";
+import {generateFilmsCard} from "./mock/card.js";
+
+import {renderElement, RenderPosition} from "./utils.js";
 
 const FILMS_COUNT = 20;
 const FILMS_COUNT_PER_STEP = 5;
 
+const siteHeaderElement = document.querySelector(`.header`);
+const siteMainElement = document.querySelector(`.main`);
+const siteFooterElement = document.querySelector(`.footer`);
+
+const profile = generateProfileUser();
 const cards = new Array(FILMS_COUNT).fill().map(generateFilmsCard);
 const filters = generateFilmsFilter(cards);
-const profile = generateProfileUser();
 
-const siteMainElement = document.querySelector(`.main`);
+renderElement(siteHeaderElement, new UserProfileView(profile).getElement(), RenderPosition.BEFOREEND);
+renderElement(siteMainElement, new FilmsFilter(filters).getElement(), RenderPosition.BEFOREEND);
+renderElement(siteMainElement, new FilmsSortView().getElement(), RenderPosition.BEFOREEND);
 
-/**
- * отрисовывает шаблон на странице
- * @param {HTMLElement} container - HTML-элемент на странице
- * @param {string} template - HTML-строка, которая будет вставлена именно «как HTML»
- * @param {string} place - специальное слово, указывающее, куда по отношению к container производить вставку
- */
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
+const allFilmsComponent = new AllFilmsView();
+const mainFilmsComponent = new MainFilmsView();
+const filmsContainerComponent = new FilmsContainerView();
 
-const header = document.querySelector(`.header`);
-render(header, createProfileTemplate(profile), `beforeend`);
-
-render(siteMainElement, createFilterTemplate(filters), `beforeend`);
-render(siteMainElement, createSortTemplate(), `beforeend`);
-render(siteMainElement, createSectionFilmsTemplate(), `beforeend`);
-
-const mainSectionFilms = document.querySelector(`.films`);
-
-render(mainSectionFilms, createSectionFilmsListTemplate(), `beforeend`);
-
-const mainFilmsList = mainSectionFilms.querySelector(`.films-list`);
-const mainFilmsListContainer = mainFilmsList.querySelector(`.films-list__container`);
+renderElement(siteMainElement, allFilmsComponent.getElement(), RenderPosition.BEFOREEND);
+renderElement(allFilmsComponent.getElement(), mainFilmsComponent.getElement(), RenderPosition.BEFOREEND);
+renderElement(mainFilmsComponent.getElement(), filmsContainerComponent.getElement(), RenderPosition.BEFOREEND);
 
 for (let i = 0; i < Math.min(cards.length, FILMS_COUNT_PER_STEP); i++) {
-  render(mainFilmsListContainer, createFilmCardTemplate(cards[i]), `beforeend`);
+  renderElement(filmsContainerComponent.getElement(), new FilmCard(cards[i]).getElement(), RenderPosition.BEFOREEND);
 }
 
 if (cards.length > FILMS_COUNT_PER_STEP) {
   let renderedCardsCount = FILMS_COUNT_PER_STEP;
 
-  render(mainFilmsList, createShowMoreButtonTemplate(), `beforeend`);
+  const showMoreButtonComponent = new ShowMoreButton();
 
-  const showMoreButton = mainSectionFilms.querySelector(`.films-list__show-more`);
-  showMoreButton.addEventListener(`click`, (evt) => {
+  renderElement(mainFilmsComponent.getElement(), showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+
+  showMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
     evt.preventDefault();
-    cards.slice(renderedCardsCount, renderedCardsCount + FILMS_COUNT_PER_STEP).forEach((card) => render(mainFilmsListContainer, createFilmCardTemplate(card), `beforeend`));
+    cards.slice(renderedCardsCount, renderedCardsCount + FILMS_COUNT_PER_STEP).forEach((card) => renderElement(filmsContainerComponent.getElement(), new FilmCard(card).getElement(), RenderPosition.BEFOREEND));
     renderedCardsCount += FILMS_COUNT_PER_STEP;
     if (renderedCardsCount >= cards.length) {
-      showMoreButton.remove();
+      showMoreButtonComponent.getElement().remove();
+      showMoreButtonComponent.removeElement();
     }
   });
 }
 
-render(mainSectionFilms, createRatedFilmsListTemplate(), `beforeend`);
-render(mainSectionFilms, createCommentedFilmsListTemplate(), `beforeend`);
+renderElement(siteFooterElement, new FilmsTotal().getElement(), RenderPosition.BEFOREEND);
 
-const extraFilmsList = mainSectionFilms.querySelectorAll(`.films-list--extra`);
-
-extraFilmsList.forEach(function (elem) {
-  const extraFilmsListContainer = elem.querySelector(`.films-list__container`);
-  render(extraFilmsListContainer, createFilmCardTemplate(cards[0]), `beforeend`);
-  render(extraFilmsListContainer, createFilmCardTemplate(cards[1]), `beforeend`);
-});
-
-const footer = document.querySelector(`.footer`);
-const footerStatistics = footer.querySelector(`.footer__statistics`);
-
-render(footerStatistics, createTotalNumberFilmsTemplate(), `beforeend`);
+// Показ блоков «Top rated» и «Most commented» — часть дополнительного задания. Оно выполняется по желанию.
+// Выполню позднее

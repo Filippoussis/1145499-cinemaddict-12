@@ -1,4 +1,4 @@
-export const NAMES = [
+export const NAME = [
   `The Dance of Life`,
   `Sagebrush Trail`,
   `The Man with the Golden Arm`,
@@ -8,7 +8,7 @@ export const NAMES = [
   `Made for Each Other`,
 ];
 
-export const POSTERS = [
+export const POSTER = [
   `the-dance-of-life.jpg`,
   `sagebrush-trail.jpg`,
   `the-man-with-the-golden-arm.jpg`,
@@ -47,7 +47,7 @@ export const Year = {
   MAX: 2020,
 };
 
-export const GENRES = [
+export const GENRE = [
   `Drama`,
   `Mystery`,
   `Comedy`,
@@ -64,9 +64,4 @@ export const NumberGenres = {
 export const Comments = {
   MIN: 0,
   MAX: 5,
-};
-
-export const UserFilmsCount = {
-  MIN: 0,
-  MAX: 50,
 };
