@@ -1,9 +1,11 @@
+import {createElement} from "../utils.js";
+
 /**
  * создает шаблон профайла пользователя
  * @param {object} profile - объект с данными пользователя
  * @return {string} возвращает HTML-строку в ввиде кода HTML
  */
-export const createProfileTemplate = (profile) => {
+const createUserProfileTemplate = (profile) => {
 
   const {rank} = profile;
 
@@ -14,3 +16,26 @@ export const createProfileTemplate = (profile) => {
     </section>`
   );
 };
+
+export default class UserProfile {
+  constructor(profile) {
+    this._profile = profile;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return createUserProfileTemplate(this._profile);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
