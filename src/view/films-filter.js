@@ -1,11 +1,13 @@
+import {createElement} from "../utils.js";
+
 /**
  * создает шаблон меню фильтра
- * @param {object} filters - объект со значением полей фильтров
+ * @param {object} filter - объект со значением полей фильтров
  * @return {string} возвращает HTML-строку в ввиде кода HTML
  */
-export const createFilterTemplate = (filters) => {
+const createFilmsFilterTemplate = (filter) => {
 
-  const {watchlist, watched, favorites} = filters;
+  const {watchlist, watched, favorites} = filter;
 
   return (
     `<nav class="main-navigation">
@@ -19,3 +21,26 @@ export const createFilterTemplate = (filters) => {
     </nav>`
   );
 };
+
+export default class FilmsFilter {
+  constructor(filter) {
+    this._filter = filter;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return createFilmsFilterTemplate(this._filter);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
