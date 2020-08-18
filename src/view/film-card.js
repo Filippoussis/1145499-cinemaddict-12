@@ -29,7 +29,7 @@ const createFilmCardTemplate = (card) => {
   );
 };
 
-export default class Card {
+export default class FilmCard {
   constructor(card) {
     this._card = card;
     this._element = null;
