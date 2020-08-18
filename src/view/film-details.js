@@ -1,7 +1,7 @@
 import {createElement} from "../utils.js";
 
 export const createFilmDetailsTemplate = (card) => {
-  const {name, poster, description, rating, year, genre, comments} = card;
+  const {name, poster, description, rating} = card;
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
