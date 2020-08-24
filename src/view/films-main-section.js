@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон основного блока с контентом
@@ -10,24 +10,8 @@ const createFilmsMainSectionTemplate = () => {
   );
 };
 
-export default class Films {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Films extends AbstractView {
   _getTemplate() {
     return createFilmsMainSectionTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

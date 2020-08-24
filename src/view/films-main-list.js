@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон основного списка фильмов
@@ -12,24 +12,8 @@ const createFilmsMainListTemplate = () => {
   );
 };
 
-export default class MainFilms {
-  constructor() {
-    this._element = null;
-  }
-
+export default class MainFilms extends AbstractView {
   _getTemplate() {
     return createFilmsMainListTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
