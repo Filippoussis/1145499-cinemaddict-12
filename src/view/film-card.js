@@ -29,13 +29,32 @@ const createFilmCardTemplate = (card) => {
   );
 };
 
+const POPUP_TARGET_CLASS = [
+  `film-card__title`,
+  `film-card__poster`,
+  `film-card__comments`,
+];
+
 export default class FilmCard extends AbstractView {
   constructor(card) {
     super();
     this._card = card;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   _getTemplate() {
     return createFilmCardTemplate(this._card);
+  }
+
+  _clickHandler(evt) {
+    evt.preventDefault();
+    if (POPUP_TARGET_CLASS.includes(evt.target.className)) {
+      this._callback.click();
+    }
+  }
+
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().addEventListener(`click`, this._clickHandler);
   }
 }

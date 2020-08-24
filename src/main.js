@@ -19,12 +19,6 @@ import {renderElement, RenderPosition} from "./utils.js";
 const FILMS_COUNT = 20;
 const FILMS_COUNT_PER_STEP = 5;
 
-const POPUP_TARGET_CLASS = [
-  `film-card__title`,
-  `film-card__poster`,
-  `film-card__comments`,
-];
-
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
@@ -69,15 +63,12 @@ const renderFilmCard = (cardListElement, card) => {
     }
   };
 
-  filmCardComponent.getElement().addEventListener(`click`, (evt) => {
-    if (POPUP_TARGET_CLASS.includes(evt.target.className)) {
-      showPopup();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }
+  filmCardComponent.setClickHandler(() => {
+    showPopup();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  filmCardDetailsComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
-    evt.preventDefault();
+  filmCardDetailsComponent.setClickHandler(() => {
     closePopup();
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
@@ -96,8 +87,7 @@ if (cards.length > FILMS_COUNT_PER_STEP) {
 
   renderElement(mainFilmsComponent.getElement(), showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
-  showMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
-    evt.preventDefault();
+  showMoreButtonComponent.setClickHandler(() => {
     cards
       .slice(renderedCardsCount, renderedCardsCount + FILMS_COUNT_PER_STEP)
       .forEach((card) => renderFilmCard(filmsContainerComponent.getElement(), card));
