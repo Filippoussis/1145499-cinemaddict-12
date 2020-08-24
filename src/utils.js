@@ -16,22 +16,6 @@ export const getRandomInteger = (min = 0, max = 1) => Math.floor(min + Math.rand
 export const getRandomFloat = (min = 0, max = 1, n = 1) => (min + Math.random() * (max - min)).toFixed(n);
 
 /**
- * возвращает функцию, которая уменьшает массив на единицу,
- * путем удаления случайного элемента, и его же возвращает
- * @param {Array} arr - массив данных
- * @return {string} элемент массива
- */
-export const getReducingList = (arr) => {
-  const arrCopy = arr.slice();
-  return () => {
-    const randomIndex = getRandomInteger(0, arrCopy.length - 1);
-    const uniqueElement = arrCopy.splice(randomIndex, 1);
-
-    return uniqueElement;
-  };
-};
-
-/**
  * возвращает случайный элемент массива
  * @param {Array} arr - массив данных
  * @return {string} случайный элемент массива
@@ -53,16 +37,6 @@ export const getListRandomLength = (arr, min, max) => {
   const listCopy = arr.slice();
 
   return listCopy.splice(getRandomInteger(0, listCopy.length - 1), getRandomInteger(min, max));
-};
-
-/**
- * отрисовывает шаблон на странице
- * @param {HTMLElement} container - HTML-элемент на странице
- * @param {string} template - HTML-строка, которая будет вставлена именно «как HTML»
- * @param {string} place - специальное слово, указывающее, куда по отношению к container производить вставку
- */
-export const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
 };
 
 export const createElement = (template) => {
