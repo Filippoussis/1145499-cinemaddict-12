@@ -7,10 +7,10 @@ import {Year} from "../const.js";
 import {GENRE} from "../const.js";
 import {Comments} from "../const.js";
 import {NumberGenres} from "../const.js";
-import {getRandomInteger} from "../utils.js";
-import {getRandomElementFromList} from "../utils.js";
-import {getListRandomLength} from "../utils.js";
-import {getRandomFloat} from "../utils.js";
+import {getRandomInteger} from "../utils/common.js";
+import {getRandomElementFromList} from "../utils/common.js";
+import {getListRandomLength} from "../utils/common.js";
+import {getRandomFloat} from "../utils/common.js";
 
 export const generateFilmsCard = () => {
 

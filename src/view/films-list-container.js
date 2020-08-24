@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон обертки-контейнера
@@ -10,24 +10,8 @@ const createFilmsListContainerTemplate = () => {
   );
 };
 
-export default class Container {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Container extends AbstractView {
   _getTemplate() {
     return createFilmsListContainerTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

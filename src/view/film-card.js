@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон карточки фильма
@@ -29,25 +29,32 @@ const createFilmCardTemplate = (card) => {
   );
 };
 
-export default class FilmCard {
+const POPUP_TARGET_CLASS = [
+  `film-card__title`,
+  `film-card__poster`,
+  `film-card__comments`,
+];
+
+export default class FilmCard extends AbstractView {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   _getTemplate() {
     return createFilmCardTemplate(this._card);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
+  _clickHandler(evt) {
+    evt.preventDefault();
+    if (POPUP_TARGET_CLASS.includes(evt.target.className)) {
+      this._callback.click();
     }
-
-    return this._element;
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().addEventListener(`click`, this._clickHandler);
   }
 }

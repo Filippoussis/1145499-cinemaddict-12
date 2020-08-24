@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон сортировки фильмов
@@ -14,24 +14,8 @@ const createFilmsSortTemplate = () => {
   );
 };
 
-export default class FilmsSort {
-  constructor() {
-    this._element = null;
-  }
-
+export default class FilmsSort extends AbstractView {
   _getTemplate() {
     return createFilmsSortTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
