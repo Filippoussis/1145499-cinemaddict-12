@@ -14,7 +14,7 @@ import {generateProfileUser} from "./mock/profile.js";
 import {generateFilmsFilter} from "./mock/filter.js";
 import {generateFilmsCard} from "./mock/card.js";
 
-import {renderElement, RenderPosition} from "./utils.js";
+import {render, remove} from "./utils/render.js";
 
 const FILMS_COUNT = 20;
 const FILMS_COUNT_PER_STEP = 5;
@@ -27,20 +27,20 @@ const profile = generateProfileUser();
 const cards = new Array(FILMS_COUNT).fill().map(generateFilmsCard);
 const filters = generateFilmsFilter(cards);
 
-renderElement(siteHeaderElement, new UserProfileView(profile).getElement(), RenderPosition.BEFOREEND);
-renderElement(siteMainElement, new FilmsFilterView(filters).getElement(), RenderPosition.BEFOREEND);
-renderElement(siteMainElement, new FilmsSortView().getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserProfileView(profile));
+render(siteMainElement, new FilmsFilterView(filters));
+render(siteMainElement, new FilmsSortView());
 
 const allFilmsComponent = new AllFilmsView();
 const mainFilmsComponent = new MainFilmsView();
 const filmsContainerComponent = new FilmsContainerView();
 
-renderElement(siteMainElement, allFilmsComponent.getElement(), RenderPosition.BEFOREEND);
-renderElement(allFilmsComponent.getElement(), mainFilmsComponent.getElement(), RenderPosition.BEFOREEND);
-renderElement(mainFilmsComponent.getElement(), filmsContainerComponent.getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, allFilmsComponent);
+render(allFilmsComponent, mainFilmsComponent);
+render(mainFilmsComponent, filmsContainerComponent);
 
 if (!cards.length) {
-  renderElement(mainFilmsComponent.getElement(), new NoFilmsView().getElement(), RenderPosition.BEFOREEND);
+  render(mainFilmsComponent, new NoFilmsView());
 }
 
 const renderFilmCard = (cardListElement, card) => {
@@ -48,11 +48,11 @@ const renderFilmCard = (cardListElement, card) => {
   const filmCardDetailsComponent = new FilmCardDetailsView(card);
 
   const showPopup = () => {
-    renderElement(cardListElement, filmCardDetailsComponent.getElement(), RenderPosition.BEFOREEND);
+    render(cardListElement, filmCardDetailsComponent);
   };
 
   const closePopup = () => {
-    filmCardDetailsComponent.getElement().remove();
+    remove(filmCardDetailsComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -73,7 +73,7 @@ const renderFilmCard = (cardListElement, card) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  renderElement(cardListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(cardListElement, filmCardComponent);
 };
 
 for (let i = 0; i < Math.min(cards.length, FILMS_COUNT_PER_STEP); i++) {
@@ -85,7 +85,7 @@ if (cards.length > FILMS_COUNT_PER_STEP) {
 
   const showMoreButtonComponent = new ShowMoreButtonView();
 
-  renderElement(mainFilmsComponent.getElement(), showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+  render(mainFilmsComponent, showMoreButtonComponent);
 
   showMoreButtonComponent.setClickHandler(() => {
     cards
@@ -95,13 +95,12 @@ if (cards.length > FILMS_COUNT_PER_STEP) {
     renderedCardsCount += FILMS_COUNT_PER_STEP;
 
     if (renderedCardsCount >= cards.length) {
-      showMoreButtonComponent.getElement().remove();
-      showMoreButtonComponent.removeElement();
+      remove(showMoreButtonComponent);
     }
   });
 }
 
-renderElement(siteFooterElement, new FilmsTotalView(cards).getElement(), RenderPosition.BEFOREEND);
+render(siteFooterElement, new FilmsTotalView(cards));
 
 // Показ блоков «Top rated» и «Most commented» — часть дополнительного задания. Оно выполняется по желанию.
 // Выполню позднее
