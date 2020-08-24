@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон меню фильтра
@@ -22,25 +22,13 @@ const createFilmsFilterTemplate = (filter) => {
   );
 };
 
-export default class FilmsFilter {
+export default class FilmsFilter extends AbstractView {
   constructor(filter) {
+    super();
     this._filter = filter;
-    this._element = null;
   }
 
   _getTemplate() {
     return createFilmsFilterTemplate(this._filter);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

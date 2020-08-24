@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон карточки фильма
@@ -29,25 +29,13 @@ const createFilmCardTemplate = (card) => {
   );
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractView {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   _getTemplate() {
     return createFilmCardTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

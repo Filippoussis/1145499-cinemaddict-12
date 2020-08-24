@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 /**
  * создает шаблон блока с общим количеством фильмов
@@ -13,25 +13,13 @@ const createFilmsTotalTemplate = (cards) => {
   );
 };
 
-export default class FilmsTotal {
+export default class FilmsTotal extends AbstractView {
   constructor(cards) {
+    super();
     this._cards = cards;
-    this._element = null;
   }
 
   _getTemplate() {
     return createFilmsTotalTemplate(this._cards);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
