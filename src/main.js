@@ -1,6 +1,5 @@
 import UserProfileView from "./view/user-profile.js";
 import FilmsFilterView from "./view/films-filter.js";
-import FilmsSortView from "./view/films-sort.js";
 import FilmsTotalView from "./view/films-total.js";
 
 import FilmsPresenter from "./presenter/films.js";
@@ -23,7 +22,6 @@ const filters = generateFilmsFilter(cards);
 
 render(siteHeaderElement, new UserProfileView(profile));
 render(siteMainElement, new FilmsFilterView(filters));
-render(siteMainElement, new FilmsSortView());
 
 const filmsPresenter = new FilmsPresenter(siteMainElement);
 filmsPresenter.init(cards);
