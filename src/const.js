@@ -65,3 +65,9 @@ export const Comments = {
   MIN: 0,
   MAX: 5,
 };
+
+export const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`
+};
