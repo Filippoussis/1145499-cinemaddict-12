@@ -12,9 +12,12 @@ import {getRandomElementFromList} from "../utils/common.js";
 import {getListRandomLength} from "../utils/common.js";
 import {getRandomFloat} from "../utils/common.js";
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 export const generateFilmsCard = () => {
 
   return {
+    id: generateId(),
     name: getRandomElementFromList(NAME),
     poster: getRandomElementFromList(POSTER),
     description: getListRandomLength(DESCRIPTION, NumberSentencesOfDescription.MIN, NumberSentencesOfDescription.MAX).join(`, `),

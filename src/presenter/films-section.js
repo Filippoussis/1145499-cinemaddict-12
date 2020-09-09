@@ -19,6 +19,7 @@ export default class SectionFilms {
     this._filmsContainer = filmsContainer;
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
+    this._filmCardPresenter = {};
 
     this._filmsSortComponent = new FilmsSortView();
     this._filmsSectionComponent = new FilmsMainSectionView();
@@ -75,6 +76,7 @@ export default class SectionFilms {
   _renderCard(card) {
     const filmCardPresenter = new FilmCardPresenter(this._filmsContainerComponent);
     filmCardPresenter.init(card);
+    this._filmCardPresenter[card.id] = filmCardPresenter;
   }
 
   _renderCards(from, to) {
@@ -102,7 +104,10 @@ export default class SectionFilms {
   }
 
   _clearTaskList() {
-    this._filmsContainerComponent.getElement().innerHTML = ``;
+    Object
+      .values(this._filmCardPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._filmCardPresenter = {};
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
   }
 
