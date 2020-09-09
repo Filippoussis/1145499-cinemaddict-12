@@ -2,7 +2,7 @@ import UserProfileView from "./view/user-profile.js";
 import FilmsFilterView from "./view/films-filter.js";
 import FilmsTotalView from "./view/films-total.js";
 
-import FilmsPresenter from "./presenter/films.js";
+import FilmsPresenter from "./presenter/films-section.js";
 
 import {generateProfileUser} from "./mock/profile.js";
 import {generateFilmsFilter} from "./mock/filter.js";
@@ -27,6 +27,3 @@ const filmsPresenter = new FilmsPresenter(siteMainElement);
 filmsPresenter.init(cards);
 
 render(siteFooterElement, new FilmsTotalView(cards));
-
-// Показ блоков «Top rated» и «Most commented» — часть дополнительного задания. Оно выполняется по желанию.
-// Выполню позднее

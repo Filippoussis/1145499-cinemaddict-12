@@ -2,10 +2,10 @@ import FilmsSortView from "../view/films-sort.js";
 import FilmsMainSectionView from "../view/films-main-section.js";
 import FilmsMainListView from "../view/films-main-list.js";
 import FilmsContainerView from "../view/films-list-container.js";
-import FilmCardView from "../view/film-card.js";
-import FilmCardDetailsView from "../view/film-details.js";
 import NoFilmsView from "../view/no-films.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
+
+import FilmCardPresenter from "./film-card.js";
 
 import {render, remove, RenderPosition} from "../utils/render.js";
 import {sortFilmDate, sortFilmRating} from "../utils/card.js";
@@ -73,36 +73,8 @@ export default class SectionFilms {
   }
 
   _renderCard(card) {
-    const filmCardComponent = new FilmCardView(card);
-    const filmCardDetailsComponent = new FilmCardDetailsView(card);
-
-    const showPopup = () => {
-      render(this._filmsContainerComponent, filmCardDetailsComponent);
-    };
-
-    const closePopup = () => {
-      remove(filmCardDetailsComponent);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        closePopup();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    filmCardComponent.setClickHandler(() => {
-      showPopup();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    filmCardDetailsComponent.setClickHandler(() => {
-      closePopup();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-
-    render(this._filmsContainerComponent, filmCardComponent);
+    const filmCardPresenter = new FilmCardPresenter(this._filmsContainerComponent);
+    filmCardPresenter.init(card);
   }
 
   _renderCards(from, to) {
