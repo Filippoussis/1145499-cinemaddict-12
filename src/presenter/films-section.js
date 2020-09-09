@@ -9,6 +9,7 @@ import FilmCardPresenter from "./film-card.js";
 
 import {render, remove, RenderPosition} from "../utils/render.js";
 import {sortFilmDate, sortFilmRating} from "../utils/card.js";
+import {updateItem} from "../utils/common.js";
 
 import {SortType} from "../const.js";
 
@@ -28,6 +29,7 @@ export default class SectionFilms {
     this._noFilmsComponent = new NoFilmsView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
+    this._handleFilmCardChange = this._handleFilmCardChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -41,6 +43,12 @@ export default class SectionFilms {
     render(this._filmsListComponent, this._filmsContainerComponent);
 
     this._renderSection();
+  }
+
+  _handleFilmCardChange(updatedFilmCard) {
+    this._sectionFilms = updateItem(this._sectionFilms, updatedFilmCard);
+    this._sourcedSectionFilms = updateItem(this._sourcedSectionFilms, updatedFilmCard);
+    this._filmCardPresenter[updatedFilmCard.id].init(updatedFilmCard);
   }
 
   _sortCards(sortType) {

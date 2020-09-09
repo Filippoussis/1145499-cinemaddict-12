@@ -38,3 +38,17 @@ export const getListRandomLength = (arr, min, max) => {
 
   return listCopy.splice(getRandomInteger(0, listCopy.length - 1), getRandomInteger(min, max));
 };
+
+export const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1)
+  ];
+};
