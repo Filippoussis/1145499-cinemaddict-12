@@ -1,6 +1,6 @@
 import FilmCardView from "../view/film-card.js";
 import FilmCardDetailsView from "../view/film-details.js";
-import {render, remove} from "../utils/render.js";
+import {render, remove, replace} from "../utils/render.js";
 
 export default class FilmCard {
   constructor(filmsListContainer) {
@@ -17,13 +17,35 @@ export default class FilmCard {
   init(filmCard) {
     this._filmCard = filmCard;
 
+    const prevFilmCardComponent = this._filmCardComponent;
+    const prevFilmCardDetailsComponent = this._filmCardDetailsComponent;
+
     this._filmCardComponent = new FilmCardView(this._filmCard);
     this._filmCardDetailsComponent = new FilmCardDetailsView(this._filmCard);
 
     this._filmCardComponent.setClickHandler(this._clickFilmCardHandler);
     this._filmCardDetailsComponent.setClickHandler(this._clickCloseButtonHandler);
 
-    render(this._filmsListContainer, this._filmCardComponent);
+    if (prevFilmCardComponent === null || prevFilmCardDetailsComponent === null) {
+      render(this._filmsListContainer, this._filmCardComponent);
+      return;
+    }
+
+    if (this._filmsListContainer.getElement().contains(prevFilmCardComponent.getElement())) {
+      replace(this._filmCardComponent, prevFilmCardComponent);
+    }
+
+    if (this._filmsListContainer.getElement().contains(prevFilmCardDetailsComponent.getElement())) {
+      replace(this._filmCardDetailsComponent, prevFilmCardDetailsComponent);
+    }
+
+    remove(prevFilmCardComponent);
+    remove(prevFilmCardDetailsComponent);
+  }
+
+  destroy() {
+    remove(this._filmCardComponent);
+    remove(this._filmCardDetailsComponent);
   }
 
   _showPopup() {
