@@ -24,7 +24,6 @@ export default class FilmCard {
     this._filmCardDetailsComponent = new FilmCardDetailsView(this._filmCard);
 
     this._filmCardComponent.setClickHandler(this._clickFilmCardHandler);
-    this._filmCardDetailsComponent.setClickHandler(this._clickCloseButtonHandler);
 
     if (prevFilmCardComponent === null || prevFilmCardDetailsComponent === null) {
       render(this._filmsListContainer, this._filmCardComponent);
@@ -50,6 +49,7 @@ export default class FilmCard {
 
   _showPopup() {
     render(this._filmsListContainer, this._filmCardDetailsComponent);
+    this._filmCardDetailsComponent.setClickHandler(this._clickCloseButtonHandler);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 
