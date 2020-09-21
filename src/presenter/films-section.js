@@ -82,7 +82,7 @@ export default class SectionFilms {
   }
 
   _renderCard(card) {
-    const filmCardPresenter = new FilmCardPresenter(this._filmsContainerComponent);
+    const filmCardPresenter = new FilmCardPresenter(this._filmsContainerComponent, this._handleFilmCardChange);
     filmCardPresenter.init(card);
     this._filmCardPresenter[card.id] = filmCardPresenter;
   }

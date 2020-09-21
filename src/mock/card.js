@@ -27,6 +27,6 @@ export const generateFilmsCard = () => {
     comments: getRandomInteger(Comments.MIN, Comments.MAX),
     isWatchlist: Boolean(getRandomInteger()),
     isWatched: Boolean(getRandomInteger()),
-    isFavorit: Boolean(getRandomInteger()),
+    isFavorite: Boolean(getRandomInteger()),
   };
 };

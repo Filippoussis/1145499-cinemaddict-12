@@ -1,7 +1,7 @@
 import AbstractView from "./abstract.js";
 
 export const createFilmDetailsTemplate = (card) => {
-  const {name, poster, description, rating} = card;
+  const {name, poster, description, rating, isWatchlist, isWatched, isFavorite} = card;
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -67,13 +67,13 @@ export const createFilmDetailsTemplate = (card) => {
         </div>
 
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist ? `checked` : ``}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
@@ -175,21 +175,85 @@ export const createFilmDetailsTemplate = (card) => {
 export default class FilmDetails extends AbstractView {
   constructor(card) {
     super();
-    this._card = card;
-    this._clickHandler = this._clickHandler.bind(this);
+
+    this._data = card;
+
+    this._closeButtonClickHandler = this._closeButtonClickHandler.bind(this);
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+
+    this.getElement().querySelector(`#watchlist`).addEventListener(`change`, this._watchlistClickHandler);
+    this.getElement().querySelector(`#watched`).addEventListener(`change`, this._watchedClickHandler);
+    this.getElement().querySelector(`#favorite`).addEventListener(`change`, this._favoriteClickHandler);
   }
 
   _getTemplate() {
-    return createFilmDetailsTemplate(this._card);
+    return createFilmDetailsTemplate(this._data);
   }
 
-  _clickHandler(evt) {
+  reset(card) {
+    this._data = card;
+
+    this._updateElement();
+  }
+
+  _updateElement() {
+    let prevElement = this.getElement();
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.getElement();
+
+    parent.replaceChild(newElement, prevElement);
+    prevElement = null;
+  }
+
+  _updateData(update) {
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign({}, this._data, update);
+  }
+
+  _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.click();
+    this._callback.formSubmit(this._data);
   }
 
-  setClickHandler(callback) {
-    this._callback.click = callback;
-    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
+  _closeButtonClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeButtonClick();
+  }
+
+  _watchlistClickHandler() {
+    this._updateData({
+      isWatchlist: !this._data.isWatchlist
+    });
+  }
+
+  _watchedClickHandler() {
+    this._updateData({
+      isWatched: !this._data.isWatched
+    });
+  }
+
+  _favoriteClickHandler() {
+    this._updateData({
+      isFavorite: !this._data.isFavorite
+    });
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  setCloseButtonClickHandler(callback) {
+    this._callback.closeButtonClick = callback;
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeButtonClickHandler);
   }
 }
